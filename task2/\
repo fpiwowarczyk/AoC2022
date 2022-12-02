@@ -1,0 +1,109 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"strings"
+)
+
+const (
+	rock     = 1
+	paper    = 2
+	scissors = 3
+
+	win  = 6
+	draw = 3
+	lose = 0
+)
+
+func main() {
+	data := readInput("./input")
+	inputs := strings.Split(data, "\n")
+	points := 0
+	for _, game := range inputs {
+		if len(game) == 0 {
+			continue
+		}
+		moves := strings.Split(game, " ")
+		enemy := moves[0]
+		my := moves[1]
+		points += myMovePoints(enemy, my)
+
+	}
+	fmt.Println(points)
+}
+
+func readInput(dir string) string {
+	data, err := os.ReadFile(dir)
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
+}
+
+func myMovePoints(enemy, my string) int {
+	output := 0
+	switch my {
+	case "X": //rock
+		output += rock
+		switch enemy {
+		case "A": // rock
+			output += draw
+		case "B": // paper
+			output += win
+		case "C": // scissors
+			output += lose
+		}
+	case "Y": //paper
+		output += paper
+		switch enemy {
+		case "A": // rock
+			output += win
+		case "B": // paper
+			output += draw
+		case "C": //scissors
+			output += lose
+		}
+	case "Z": // scissors
+		output += scissors
+		switch enemy {
+		case "A": // rock
+			output += lose
+		case "B": //paper
+			outout += win
+		case "C": //scissors
+		output += draw
+		}
+	}
+	switch enemy {
+	case "A": // rock
+		switch my {
+		case "Y": // rock
+			return rock + draw
+		case "X": //paper
+			return paper + win
+		case "Z": //scissors
+			return scissors + lose
+		}
+	case "B": //paper
+		switch my {
+		case "Y": //rock
+			return rock + lose
+		case "X": //paper
+			return paper + draw
+		case "Z": //scissors
+			return scissors + win
+		}
+	case "C": //scissors
+		switch my {
+		case "Y": //rock
+			return rock + win
+		case "X": //paper
+			return paper + lose
+		case "Z": //scissors
+			return scissors + draw
+		}
+	}
+	fmt.Println("shodnt be here")
+	return 0
+}

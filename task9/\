@@ -1,0 +1,36 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
+type Position struct {
+
+}
+
+func main() {
+	data := readInput("./input")
+	seriesOfMoves := strings.Split(data, "\n")
+	seriesOfMoves = seriesOfMoves[:len(seriesOfMoves)-1]
+	for _, series := range seriesOfMoves {
+		parts := strings.Split(series, " ")
+		direction := parts[0]
+		value, err := strconv.Atoi(parts[1])
+		if err != nil {
+			panic(err)
+		}
+		times := value
+		fmt.Println(direction, times)
+	}
+}
+
+func readInput(dir string) string {
+	data, err := os.ReadFile(dir)
+	if err != nil {
+		panic(err)
+	}
+	return string(data)
+}
